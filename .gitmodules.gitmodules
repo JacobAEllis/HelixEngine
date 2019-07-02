@@ -1,0 +1,3 @@
+[submodule "Helix/vendor/spdlog"]
+	path = Helix/vendor/spdlog
+	url = https://github.com/gabime/spdlog
