@@ -8,20 +8,20 @@ workspace "Helix"
 		"Dist"
 	}
 
-	outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-	project "Helix"
+project "Helix"
 	location "Helix"
 	kind "SharedLib"
 	language "C++"
 
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+	targetdir ("bin/" ..outputdir.. "/%{prj.name}")
+	objdir ("bin-int/" ..outputdir.. "/%{prj.name}")
 
 	files
 	{
-		"%{prj.name}/src/**.h}",
-		"%{prj.name}/src/**.cpp}"
+		"%{prj.name}/src/**.h",
+		"%{prj.name}/src/**.cpp"
 	}
 
 	includedirs
@@ -32,25 +32,26 @@ workspace "Helix"
 	filter "system:windows"
 		cppdialect "C++17"
 		staticruntime "On"
-		systemversion "latest"
+		systemversion "10.0.17134.0"
 
 		defines
 		{
 			"HX_PLATFORM_WINDOWS",
-			"HX_BUILD_DLL",
+			"HX_BUILD_DLL"
 		}
 
-		postbuildcommands
-		{
-			("{Copy} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
-		}
+	postbuildcommands
+	{
+		("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
+	}
+		
 
 	filter "configurations:Debug"
 		defines "HX_DEBUG"
 		symbols "On"
 
 	filter "configurations:Release"
-		defines "HX_Release"
+		defines "HX_RELEASE"
 		optimize "On"
 
 	filter "configurations:Dist"
@@ -60,7 +61,7 @@ workspace "Helix"
 
 project "Sandbox"
 	location "Sandbox"
-	kind "SharedLib"
+	kind "ConsoleApp"
 	language "C++"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
@@ -68,25 +69,25 @@ project "Sandbox"
 
 	files
 	{
-		"%{prj.name}/src/**.h}",
-		"%{prj.name}/src/**.cpp}"
-	}
+		"%{prj.name}/src/**.h",
+		"%{prj.name}/src/**.cpp"
+	}	
 
 	includedirs
 	{
-		"%{prj.name}/vendor/spdlog/include/spdlog",
+		"Helix/vendor/spdlog/include",
 		"Helix/src"
 	}
 
 	links
 	{
-		"Hazel"
+		"Helix"
 	}
 
 	filter "system:windows"
 		cppdialect "C++17"
 		staticruntime "On"
-		systemversion "latest"
+		systemversion "10.0.17134.0"
 
 		defines
 		{
@@ -98,7 +99,7 @@ project "Sandbox"
 		symbols "On"
 
 	filter "configurations:Release"
-		defines "HX_Release"
+		defines "HX_RELEASE"
 		optimize "On"
 
 	filter "configurations:Dist"

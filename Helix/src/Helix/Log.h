@@ -5,7 +5,6 @@
 #include "Core.h"
 #include "spdlog/spdlog.h"
 
-
 namespace Helix {
 
 	class HELIX_API Log
